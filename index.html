@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Análisis de Datos — Espesadores E1·E2·E3</title>
+<style>
+
+
+:root{
+  --azul:#0d3b66; --azul2:#1f5f8b; --azul3:#3d8bc4;
+  --cyan:#00b4d8; --verde:#2a9d8f; --naranja:#f77f00; --rojo:#d62828;
+  --gris:#f8f9fb; --gris2:#e9ecef; --texto:#1a1f26; --texto2:#5a6570;
+  --borde:#dee2e6; --sombra:0 2px 12px rgba(13,59,102,.08);
+  --sombra-h:0 12px 32px rgba(13,59,102,.16);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',-apple-system,'Helvetica Neue',Arial,sans-serif;
+  background:var(--gris);color:var(--texto);line-height:1.6;font-size:15px}
+.wrap{max-width:1400px;margin:0 auto;padding:0 24px}
+
+/* HEADER */
+header{background:linear-gradient(135deg,var(--azul) 0%,var(--azul2) 55%,var(--azul3) 100%);
+  color:#fff;padding:0;position:relative;overflow:hidden}
+header::after{content:'';position:absolute;inset:0;
+  background:radial-gradient(circle at 78% 22%,rgba(0,180,216,.28),transparent 55%)}
+.hd{position:relative;z-index:2;padding:52px 0 46px}
+.eyebrow{font-size:12px;letter-spacing:3.5px;text-transform:uppercase;
+  opacity:.82;font-weight:600;margin-bottom:14px}
+h1{font-size:40px;font-weight:700;letter-spacing:-.6px;margin-bottom:12px;line-height:1.18}
+.sub{font-size:17px;opacity:.9;font-weight:300;max-width:760px}
+.hmeta{display:flex;gap:30px;margin-top:26px;flex-wrap:wrap}
+.hmeta div{font-size:13px}
+.hmeta b{display:block;font-size:20px;font-weight:600;margin-bottom:2px}
+.hmeta span{opacity:.78}
+
+/* NAV */
+nav{background:#fff;border-bottom:1px solid var(--borde);position:sticky;top:0;
+  z-index:100;box-shadow:0 1px 6px rgba(0,0,0,.05)}
+nav .wrap{display:flex;gap:4px;overflow-x:auto;align-items:center}
+nav a{padding:15px 17px;text-decoration:none;color:var(--texto2);font-size:13.5px;
+  font-weight:500;white-space:nowrap;border-bottom:3px solid transparent;
+  transition:all .2s}
+nav a:hover{color:var(--azul);background:var(--gris)}
+nav a.act{color:var(--azul);border-bottom-color:var(--cyan);font-weight:600}
+.back{margin-right:auto;display:flex;align-items:center;gap:7px;
+  color:var(--azul)!important;font-weight:600!important}
+
+/* PORTADA CARDS */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(400px,1fr));
+  gap:30px;margin:52px 0}
+.card{background:#fff;border-radius:16px;overflow:hidden;box-shadow:var(--sombra);
+  transition:transform .3s cubic-bezier(.2,.8,.2,1),box-shadow .3s;
+  text-decoration:none;color:inherit;display:flex;flex-direction:column;
+  border:1px solid var(--borde)}
+.card:hover{transform:translateY(-7px);box-shadow:var(--sombra-h)}
+.card-top{padding:34px 32px;color:#fff;position:relative;overflow:hidden}
+.c10 .card-top{background:linear-gradient(135deg,#0d3b66,#1f5f8b)}
+.c1h .card-top{background:linear-gradient(135deg,#14746f,#2a9d8f)}
+.card-top::after{content:'';position:absolute;right:-32px;top:-32px;
+  width:150px;height:150px;border-radius:50%;background:rgba(255,255,255,.09)}
+.badge{display:inline-block;background:rgba(255,255,255,.22);padding:5px 13px;
+  border-radius:20px;font-size:11px;font-weight:700;letter-spacing:1.4px;
+  text-transform:uppercase;margin-bottom:14px;backdrop-filter:blur(6px)}
+.card h2{font-size:27px;font-weight:700;margin-bottom:8px;position:relative;z-index:2}
+.card-top p{font-size:14.5px;opacity:.9;position:relative;z-index:2}
+.card-body{padding:26px 32px;flex:1}
+.kv{display:grid;grid-template-columns:1fr 1fr;gap:16px 22px;margin-bottom:22px}
+.kv>div{border-left:3px solid var(--gris2);padding-left:12px}
+.kv b{display:block;font-size:21px;font-weight:700;color:var(--azul);line-height:1.2}
+.kv span{font-size:11.5px;color:var(--texto2);text-transform:uppercase;
+  letter-spacing:.6px;font-weight:600}
+.tags{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:20px}
+.tag{background:var(--gris);border:1px solid var(--borde);padding:4px 11px;
+  border-radius:6px;font-size:11.5px;color:var(--texto2);font-weight:500}
+.card-foot{padding:16px 32px;background:var(--gris);border-top:1px solid var(--borde);
+  display:flex;justify-content:space-between;align-items:center;
+  font-weight:600;color:var(--azul);font-size:14px}
+.arrow{transition:transform .25s}
+.card:hover .arrow{transform:translateX(6px)}
+
+/* SECCIONES */
+section{background:#fff;border-radius:14px;padding:34px 36px;margin-bottom:26px;
+  box-shadow:var(--sombra);border:1px solid var(--borde)}
+h2.sec{font-size:24px;font-weight:700;color:var(--azul);margin-bottom:8px;
+  padding-bottom:13px;border-bottom:3px solid var(--gris2);
+  display:flex;align-items:center;gap:12px}
+.num{background:var(--azul);color:#fff;width:34px;height:34px;border-radius:9px;
+  display:inline-flex;align-items:center;justify-content:center;font-size:16px;
+  font-weight:700;flex-shrink:0}
+h3{font-size:17.5px;font-weight:650;color:var(--azul2);margin:26px 0 10px}
+h4{font-size:15px;font-weight:650;color:var(--texto);margin:18px 0 8px}
+p{margin-bottom:13px;color:var(--texto);text-align:justify}
+.lead{font-size:16px;color:var(--texto2);margin-bottom:22px}
+
+/* TABLAS */
+.tw{overflow-x:auto;margin:18px 0;border-radius:10px;border:1px solid var(--borde)}
+table{width:100%;border-collapse:collapse;font-size:13px;background:#fff}
+th{background:var(--azul);color:#fff;padding:11px 13px;text-align:left;
+  font-weight:600;font-size:12px;white-space:nowrap;position:sticky;top:0}
+td{padding:9px 13px;border-bottom:1px solid var(--gris2)}
+tbody tr:nth-child(even){background:#fafbfd}
+tbody tr:hover{background:#eef4fa}
+td.num-c{text-align:right;font-variant-numeric:tabular-nums;font-family:'SF Mono',Consolas,monospace}
+.e1{border-left:4px solid #2E86AB}.e2{border-left:4px solid #A23B72}
+.e3{border-left:4px solid #3BB273}
+.pos{color:#1b7a4d;font-weight:600}.neg{color:#c1121f;font-weight:600}
+
+/* CAJAS */
+.box{border-left:5px solid var(--cyan);background:#eef8fc;padding:20px 24px;
+  border-radius:0 10px 10px 0;margin:22px 0}
+.box.warn{border-color:var(--naranja);background:#fff6e9}
+.box.ok{border-color:var(--verde);background:#eaf7f4}
+.box h4{margin-top:0;color:var(--azul);display:flex;align-items:center;gap:8px}
+.box ul{margin:9px 0 0 20px}.box li{margin-bottom:7px;font-size:14px}
+
+/* FIGURAS */
+figure{margin:26px 0;text-align:center}
+figure img{max-width:100%;height:auto;border-radius:11px;
+  box-shadow:0 3px 16px rgba(0,0,0,.09);border:1px solid var(--borde)}
+figcaption{margin-top:12px;font-size:13px;color:var(--texto2);font-style:italic;
+  max-width:920px;margin-left:auto;margin-right:auto;line-height:1.55}
+figcaption b{font-style:normal;color:var(--azul);font-weight:650}
+
+/* KPIs */
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));
+  gap:15px;margin:24px 0}
+.kpi{background:linear-gradient(160deg,#fff,var(--gris));border:1px solid var(--borde);
+  border-radius:11px;padding:19px;text-align:center;transition:transform .2s}
+.kpi:hover{transform:translateY(-3px)}
+.kpi b{display:block;font-size:28px;font-weight:700;color:var(--azul);line-height:1.15}
+.kpi span{font-size:11.5px;color:var(--texto2);text-transform:uppercase;
+  letter-spacing:.7px;font-weight:600;display:block;margin-top:5px}
+.kpi small{display:block;font-size:11px;color:var(--texto2);margin-top:4px;opacity:.8}
+
+/* TABS */
+.tabs{display:flex;gap:6px;margin:22px 0 0;border-bottom:2px solid var(--gris2)}
+.tab{padding:11px 21px;background:none;border:none;cursor:pointer;font-size:14px;
+  font-weight:600;color:var(--texto2);border-bottom:3px solid transparent;
+  transition:all .2s;font-family:inherit;margin-bottom:-2px}
+.tab:hover{color:var(--azul);background:var(--gris)}
+.tab.act{color:var(--azul);border-bottom-color:var(--cyan)}
+.pane{display:none;padding-top:20px}.pane.act{display:block}
+
+footer{background:var(--azul);color:#fff;padding:32px 0;margin-top:52px;
+  text-align:center;font-size:13px}
+footer p{color:#fff;opacity:.82;text-align:center;margin-bottom:5px}
+@media print{nav{display:none}section{box-shadow:none;page-break-inside:avoid}}
+@media(max-width:768px){h1{font-size:29px}.cards{grid-template-columns:1fr}
+  section{padding:22px}.kv{grid-template-columns:1fr}}
+
+
+/* ═══════ BLOQUES DE CÓDIGO PYTHON ═══════ */
+.codigo{margin:22px 0;border-radius:11px;overflow:hidden;
+  border:1px solid #2d3748;box-shadow:0 3px 14px rgba(13,59,102,.13)}
+.cod-head{background:linear-gradient(90deg,#1a202c,#2d3748);color:#e2e8f0;
+  padding:12px 18px;display:flex;align-items:center;gap:11px;cursor:pointer;
+  user-select:none;transition:background .2s;font-size:13.5px}
+.cod-head:hover{background:linear-gradient(90deg,#2d3748,#3a4759)}
+.cod-head .py{background:#3776ab;color:#fff;font-size:10.5px;font-weight:700;
+  padding:3px 9px;border-radius:4px;letter-spacing:.6px;flex-shrink:0}
+.cod-head .tt{font-weight:600;flex:1}
+.cod-head .tg{font-size:11px;opacity:.7;font-weight:400}
+.cod-head .ch{transition:transform .25s;font-size:12px;opacity:.75}
+.codigo.open .cod-head .ch{transform:rotate(180deg)}
+.cod-body{max-height:0;overflow:hidden;transition:max-height .35s ease}
+.codigo.open .cod-body{max-height:3200px}
+.cod-body pre{background:#1a202c;color:#e2e8f0;padding:20px 22px;margin:0;
+  overflow-x:auto;font-family:'SF Mono','Cascadia Code',Consolas,'Courier New',monospace;
+  font-size:12.5px;line-height:1.72;tab-size:4}
+.cod-body code{font-family:inherit;white-space:pre}
+/* Sintaxis */
+.k{color:#c792ea;font-weight:600}   /* keyword */
+.f{color:#82aaff}                    /* función */
+.s{color:#c3e88d}                    /* string */
+.n{color:#f78c6c}                    /* número */
+.c{color:#5c6b7d;font-style:italic}  /* comentario */
+.o{color:#89ddff}                    /* operador */
+.b{color:#ffcb6b}                    /* builtin/clase */
+.cod-body pre::-webkit-scrollbar{height:9px}
+.cod-body pre::-webkit-scrollbar-track{background:#111722}
+.cod-body pre::-webkit-scrollbar-thumb{background:#4a5568;border-radius:5px}
+.cod-body pre::-webkit-scrollbar-thumb:hover{background:#5f6b7e}
+.cod-nota{background:#eef8fc;border-left:4px solid var(--cyan);padding:11px 16px;
+  font-size:13px;color:var(--texto2);border-radius:0 7px 7px 0;margin:-4px 0 20px}
+.exp-all{background:var(--azul);color:#fff;border:none;padding:8px 16px;
+  border-radius:7px;font-size:12.5px;font-weight:600;cursor:pointer;
+  font-family:inherit;margin:6px 0 16px;transition:background .2s}
+.exp-all:hover{background:var(--azul2)}
+
+
+</style></head><body>
+
+<header><div class="wrap hd">
+  <div class="eyebrow">Planta RAI &middot; Minera Valle Central</div>
+  <h1>Análisis de Datos de Proceso<br>Espesadores E1 &middot; E2 &middot; E3</h1>
+  <p class="sub">Estudio estadístico de variables operacionales aplicando
+  detección de valores atípicos, análisis de correlaciones y caracterización de
+  distribuciones sobre dos resoluciones temporales independientes, contrastado
+  contra la base de diseño del fabricante.</p>
+  <div class="hmeta">
+    <div><b>2</b><span>Datasets analizados</span></div>
+    <div><b>47,952</b><span>Registros procesados</span></div>
+    <div><b>4</b><span>Escenarios de filtrado</span></div>
+    <div><b>3</b><span>Espesadores</span></div>
+  </div>
+</div></header>
+
+<div class="wrap">
+
+<section style="margin-top:36px">
+  <h2 class="sec"><span class="num">i</span>Alcance del Estudio</h2>
+  <p class="lead">Este reporte aplica análisis exploratorio de datos sobre los
+  registros de proceso de los tres espesadores de la Planta RAI. El estudio se
+  ejecuta de forma independiente sobre dos resoluciones temporales, para evaluar
+  cómo la frecuencia de muestreo condiciona la caracterización estadística del
+  proceso y qué conclusiones sostiene cada una.</p>
+
+  <div class="box"><h4>&#9654; Metodología aplicada</h4><ul><li><b>Análisis preliminar:</b> verificación de valores faltantes y estadísticas descriptivas por variable y espesador.</li><li><b>Correlación:</b> matriz de Pearson y mapas de calor, con las relaciones de proceso separadas de las de consistencia interna.</li><li><b>Histogramas:</b> caracterización de la distribución de cada variable.</li><li><b>Box &amp; Whiskers:</b> dispersión y valores atípicos.</li><li><b>Limpieza:</b> filtro físico por rango posible, seguido de IQR 1,5× e Isolation Forest con contaminación 5 %.</li><li><b>Series temporales:</b> evolución con media móvil de 24 horas.</li><li><b>Contraste con diseño:</b> comparación contra el manual Delkor del equipo.</li></ul></div>
+
+  <div class="box ok"><h4>&#9654; Trazabilidad</h4><p style="margin:0">Cada sección incluye el <b>código Python</b> efectivamente utilizado, en bloques desplegables, con la lógica de carga, filtrado, cálculo estadístico y generación de cada figura. Los informes se regeneran de forma reproducible ejecutando <code>generar_informes.py</code> sobre los archivos de datos.</p></div>
+
+  <h3>Seleccione el conjunto de datos a explorar</h3>
+  <p>Cada análisis es independiente y contiene el detalle completo de la
+  metodología aplicada sobre su respectiva resolución temporal.</p>
+</section>
+
+<div class="cards">
+  <a href="analisis_10min.html" class="card c10">
+    <div class="card-top">
+      <span class="badge">Alta resolución</span>
+      <h2>Análisis cada 10 minutos</h2>
+      <p>01-03-2026 → 31-05-2026</p>
+    </div>
+    <div class="card-body">
+      <div class="kv">
+        <div><b>39,312</b><span>Registros totales</span></div>
+        <div><b>13,104</b><span>Por espesador</span></div>
+        <div><b>9</b><span>Variables</span></div>
+        <div><b>92.1%</b><span>Conservado tras IF</span></div>
+      </div>
+      <div class="tags">
+        <span class="tag">Densidad descarga</span><span class="tag">Caudal BIR</span>
+        <span class="tag">Frecuencia bomba</span><span class="tag">Tonelaje medido</span>
+        <span class="tag">Torque DCS</span><span class="tag">Solución madre</span>
+        <span class="tag" style="background:#1a202c;color:#e2e8f0;border-color:#1a202c">⌨ Código Python</span>
+      </div>
+      <p style="font-size:13.5px;color:var(--texto2);margin:0">
+      Señales del historiador que permiten <b>medir</b> el tonelaje de cada
+      espesador —caudal por densidad por concentración— en vez de estimarlo, y
+      observar la dinámica de corto plazo del proceso.</p>
+    </div>
+    <div class="card-foot"><span>Ver análisis completo</span><span class="arrow">→</span></div>
+  </a>
+
+  <a href="analisis_1hora.html" class="card c1h">
+    <div class="card-top">
+      <span class="badge">Consolidado</span>
+      <h2>Análisis cada 1 hora</h2>
+      <p>01-02-2026 → 31-05-2026</p>
+    </div>
+    <div class="card-body">
+      <div class="kv">
+        <div><b>8,640</b><span>Registros totales</span></div>
+        <div><b>2,880</b><span>Por espesador</span></div>
+        <div><b>12</b><span>Variables</span></div>
+        <div><b>97.7%</b><span>Conservado tras IF</span></div>
+      </div>
+      <div class="tags">
+        <span class="tag">Torque</span><span class="tag">Sólidos descarga</span>
+        <span class="tag">Agua clara</span><span class="tag">Floculante g/t</span>
+        <span class="tag">Feed pipe</span><span class="tag">Manning</span>
+        <span class="tag" style="background:#1a202c;color:#e2e8f0;border-color:#1a202c">⌨ Código Python</span>
+      </div>
+      <p style="font-size:13.5px;color:var(--texto2);margin:0">
+      Registro operacional de turno. Única fuente con agua clara manual,
+      dosificación de floculante y nivel de feedpipe, y la que cubre el período
+      completo de febrero a mayo.</p>
+    </div>
+    <div class="card-foot"><span>Ver análisis completo</span><span class="arrow">→</span></div>
+  </a>
+</div>
+
+<section>
+  <h2 class="sec"><span class="num">⚖</span>Comparación entre Resoluciones</h2>
+  <p>Los dos conjuntos difieren en frecuencia, período y variables disponibles,
+  lo que condiciona el tipo de conclusión que puede extraerse de cada uno.</p>
+  <div class="tw"><table><thead><tr><th>Característica</th><th>Registro 10 minutos</th><th>Registro 1 hora</th></tr></thead><tbody><tr><td><b>Frecuencia de muestreo</b></td><td>10 minutos</td><td>1 hora</td></tr><tr><td><b>Período cubierto</b></td><td>01-03 → 31-05-2026</td><td>01-02 → 31-05-2026</td></tr><tr><td><b>Registros totales</b></td><td class="num-c">39,312</td><td class="num-c">8,640</td></tr><tr><td><b>Variables analizadas</b></td><td class="num-c">9</td><td class="num-c">12</td></tr><tr><td><b>Valores tras filtro físico</b></td><td class="num-c">309,888 (96.8 %)</td><td class="num-c">88,648 (99.4 %)</td></tr><tr><td><b>Valores tras IQR 1,5×</b></td><td class="num-c">301,855 (94.3 %)</td><td class="num-c">87,090 (97.7 %)</td></tr><tr><td><b>Valores tras Isolation Forest</b></td><td class="num-c">294,660 (92.1 %)</td><td class="num-c">87,096 (97.7 %)</td></tr><tr><td><b>Ventana de suavizado (24 h)</b></td><td class="num-c">144 puntos</td><td class="num-c">24 puntos</td></tr><tr><td><b>Tonelaje por espesador</b></td><td>Medido (caudal × densidad)</td><td>Estimado (Manning)</td></tr><tr><td><b>Fuente</b></td><td>DENSIDAD.csv · DMA.csv · Datos {mes} 26.txt</td><td>Espesadores {mes} 2026.xlsx</td></tr></tbody></table></div>
+
+  <div class="box warn"><h4>&#9654; Consideración metodológica</h4><p style="margin:0">El conjunto de 10 minutos captura fluctuaciones que quedan promediadas en el registro horario, por lo que presenta una mayor proporción de registros marcados como atípicos: la variabilidad instantánea de un proceso es intrínsecamente superior a la de sus promedios horarios. Esa diferencia no indica peor calidad de dato. Ambas resoluciones son válidas y complementarias — la primera describe la dinámica del proceso, la segunda su comportamiento sostenido.</p></div>
+
+  <div class="box"><h4>&#9654; Correcciones respecto de la versión de agosto de 2026</h4><ul><li>Se incorpora un <b>filtro físico previo</b> al Isolation Forest. La versión anterior reportaba sólidos de descarga de 108 % en las tablas de datos ya filtrados.</li><li>Las correlaciones se presentan en <b>dos tablas separadas</b>: relaciones de proceso y relaciones de consistencia interna. Antes, pares donde una variable se calcula desde la otra —densidad y % de sólidos, caudal y tonelaje— encabezaban el ranking con r ≈ 0,99 y desplazaban a las relaciones informativas.</li><li>Se exige un <b>mínimo de 100 observaciones</b> para reportar estadísticos, evitando medias con desviación indefinida.</li><li>Las <b>variables de planta</b> quedan marcadas como tales, para no leerlas como diferencias entre equipos.</li><li>La concordancia entre instrumento y lectura manual se expresa como <b>sesgo medido en puntos</b>, no como correlación.</li><li>Se agrega una sección de <b>contraste con la base de diseño</b> del manual Delkor del equipo.</li></ul></div>
+</section>
+</div>
+
+<footer><div class="wrap">
+  <p><b>Análisis de Datos — Espesadores E1 · E2 · E3</b></p>
+  <p>Planta RAI · Minera Valle Central</p>
+  <p style="margin-top:12px;font-size:12px">Procesado con Python · pandas ·
+     scikit-learn · matplotlib</p>
+  <p style="font-size:12px">Generado el 11 de septiembre de 2026</p>
+</div></footer>
+</body></html>
